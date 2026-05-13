@@ -1,3 +1,6 @@
+import streamlit as st
+from groq import Groq
+
 # 1. Configuration Pro
 st.set_page_config(page_title="AntigaspIA | Haute Cuisine", page_icon="🍽️", layout="wide")
 
