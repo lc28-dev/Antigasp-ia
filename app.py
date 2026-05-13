@@ -1,136 +1,142 @@
 import streamlit as st
 from groq import Groq
 
-# 1. Configuration de la page
-st.set_page_config(page_title="AntiGaspi AI | Solutions Alimentaires", page_icon="📈", layout="centered")
+# 1. Configuration Pro
+st.set_page_config(page_title="AntigaspIA | Haute Cuisine Circulaire", page_icon="🍽️", layout="wide")
 
-# 2. Design "Minimaliste Premium" (Style SaaS 2024)
+# 2. Design "Luxe & Sobriété"
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
     
-    html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', sans-serif;
+    .stApp { background-color: #ffffff; font-family: 'Inter', sans-serif; }
+
+    /* Header avec Photo Réelle */
+    .hero-section {
+        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=2000');
+        background-size: cover;
+        background-position: center;
+        padding: 100px 20px;
+        color: white;
+        text-align: center;
+        border-radius: 0 0 40px 40px;
     }
 
-    /* Fond épuré */
-    .stApp { background-color: #FFFFFF; }
-
-    /* Barre de navigation simulée */
-    .nav-bar {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 20px 0; margin-bottom: 40px; border-bottom: 1px solid #F1F5F9;
-    }
-    .login-btn {
-        background: #F8FAFC; padding: 8px 16px; border-radius: 6px;
-        color: #0F172A; font-weight: 600; text-decoration: none; font-size: 0.9rem;
-        border: 1px solid #E2E8F0;
+    .main-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        margin-bottom: 5px;
+        letter-spacing: -1px;
     }
 
-    /* Section Hero */
-    .hero-title { 
-        color: #0F172A; font-weight: 800; text-align: center; 
-        font-size: 2.8rem; line-height: 1.1; margin-bottom: 15px;
-    }
-    .hero-subtitle { 
-        text-align: center; color: #475569; font-size: 1.2rem;
-        max-width: 600px; margin: 0 auto 40px auto;
-    }
-
-    /* Zone d'action principale */
-    .main-card {
-        background: #FFFFFF; padding: 40px; border-radius: 24px;
-        border: 1px solid #E2E8F0; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
-        margin-bottom: 40px;
+    /* Boite d'essai - L'élément central */
+    .action-container {
+        background: white;
+        max-width: 850px;
+        margin: -60px auto 40px auto;
+        padding: 45px;
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+        position: relative;
+        z-index: 99;
+        border: 1px solid #f1f5f9;
     }
 
-    /* Bouton d'action massif */
+    /* Style du bouton "Action" */
     .stButton>button {
-        width: 100%; border-radius: 12px; height: 3.8rem;
-        background-color: #0F172A; color: white; font-weight: 700;
-        font-size: 1.1rem; border: none; transition: all 0.2s ease;
-        margin-top: 20px;
+        background-color: #0f172a;
+        color: white;
+        border-radius: 8px;
+        height: 65px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        border: none;
+        width: 100%;
+        transition: all 0.3s ease;
     }
-    .stButton>button:hover { background-color: #1E293B; transform: translateY(-1px); }
+    
+    .stButton>button:hover {
+        background-color: #334155;
+        transform: translateY(-2px);
+    }
 
-    /* Témoignages sobres */
-    .testimonial {
-        font-style: italic; color: #475569; border-left: 3px solid #0F172A;
-        padding-left: 20px; margin: 30px 0; font-size: 1rem;
+    /* Section Options / Inscription */
+    .membership-section {
+        background: #f8fafc;
+        padding: 60px 20px;
+        margin-top: 40px;
+        border-radius: 30px;
+        text-align: center;
+    }
+
+    .premium-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        border: 1px solid #e2e8f0;
+        margin: 10px;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- NAVIGATION ---
+# --- HEADER ---
 st.markdown("""
-    <div class='nav-bar'>
-        <div style='font-weight:800; font-size:1.2rem; color:#0F172A;'>ANTIGASPI.AI</div>
-        <a href='#' class='login-btn'>S'identifier / Créer un compte</a>
+    <div class="hero-section">
+        <h1 class="main-title">AntigaspIA</h1>
+        <p style="font-size: 1.3rem; font-weight: 300; opacity: 0.95; letter-spacing: 0.5px;">
+            L'intelligence artificielle qui sublime vos ressources alimentaires.
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
-# --- HERO SECTION ---
-st.markdown("<h1 class='hero-title'>Ne gaspillez plus.<br>Cuisinez intelligemment.</h1>", unsafe_allow_html=True)
-st.markdown("<p class='hero-subtitle'>L'intelligence artificielle au service de votre budget et de l'environnement.</p>", unsafe_allow_html=True)
-
-# --- ZONE D'ACTION PRINCIPALE ---
+# --- ZONE D'ESSAI (CE QUI SAUTE AUX YEUX) ---
 with st.container():
-    st.markdown("<div class='main-card'>", unsafe_allow_html=True)
+    st.markdown("<div class="action-container">", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; font-family:Playfair Display; font-size:1.8rem; margin-bottom:25px;'>Optimisez vos restes en un clic</h2>", unsafe_allow_html=True)
     
-    st.markdown("### 🛠 Configurer votre analyse")
+    ingredients = st.text_area("", placeholder="Décrivez ici ce qu'il reste dans votre cuisine (ex: Dos de cabillaud, poireaux, demi-citron...)", label_visibility="collapsed", height=150)
     
-    col1, col2 = st.columns(2)
-    with col1:
-        regime = st.selectbox("Préférences", ["Aucune restriction", "Végétarien", "Vegan", "Sans Gluten", "Paléo"])
-    with col2:
-        budget = st.selectbox("Objectif Budget", ["Économique", "Standard", "Gastronomique"])
-
-    # On met l'accent sur l'entrée des ingrédients
-    ingredients = st.text_area("📋 Liste des ingrédients restants :", 
-                               placeholder="Ex: 3 carottes, 1/2 oignon, reste de poulet...",
-                               height=120)
+    st.markdown("<br>", unsafe_allow_html=True)
+    submit = st.button("LANCER L'ANALYSE CULINAIRE")
     
-    submit = st.button("LANCER L'OPTIMISATION CULINAIRE")
+    st.markdown("<p style='text-align:center; font-size:0.85rem; color:#64748b; margin-top:20px;'>Usage gratuit • Résultats basés sur la haute gastronomie</p>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-# --- LOGIQUE IA ---
+# --- RESULTATS ---
 if submit:
     if not ingredients:
-        st.error("Veuillez saisir au moins un ingrédient pour lancer l'IA.")
+        st.warning("Veuillez fournir une liste d'ingrédients pour l'IA.")
     else:
         try:
             client = Groq(api_key=st.secrets["GROQ_API_KEY"])
-            with st.spinner('Analyse des combinaisons optimales...'):
-                prompt = f"Expert culinaire. Recette {regime} budget {budget} avec : {ingredients}. Structure claire : Titre, Ingrédients, Instructions précises."
+            with st.spinner('Génération de votre fiche recette personnalisée...'):
+                prompt = f"Tu es AntigaspIA, un expert culinaire haut de gamme. Crée une recette précise avec ces restes : {ingredients}. Structure avec Titre élégant, Ingrédients, Étapes et un conseil antigaspillage pro."
                 completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model="llama-3.3-70b-versatile")
                 
-                st.markdown("### 💎 Votre Solution Sur-Mesure")
-                st.success(completion.choices[0].message.content)
-                
-                # Option de sauvegarde (pour inciter à créer un compte)
-                st.info("💡 **Voulez-vous enregistrer cette recette ?** Créez un compte pour retrouver vos préférences et vos historiques d'analyses.")
+                st.markdown("---")
+                st.markdown("### 📋 Fiche Technique du Chef")
+                st.write(completion.choices[0].message.content)
+                st.balloons()
         except:
-            st.error("Service momentanément indisponible.")
+            st.error("Une erreur technique est survenue. Veuillez réessayer.")
 
-# --- PREUVE SOCIALE SOBRE ---
-st.write("---")
-st.markdown("#### Retours sur l'efficacité de la solution")
+# --- OPTIONS AVANCÉES & COMPTE ---
+st.markdown("<div class='membership-section'>", unsafe_allow_html=True)
+st.markdown("<h2 style='font-family:Playfair Display;'>Allez plus loin avec AntigaspIA</h2>", unsafe_allow_html=True)
+st.markdown("<p style='color:#64748b;'>Personnalisez vos analyses et sauvegardez vos préférences nutritionnelles.</p>", unsafe_allow_html=True)
 
-col_a, col_b = st.columns(2)
+col_a, col_b, col_c = st.columns(3)
+
 with col_a:
-    st.markdown("""
-        <div class='testimonial'>
-            "Une approche pragmatique du gaspillage. Les recettes sont techniquement justes et adaptées au budget familial."
-            <br><b>— Antoine M., Gestionnaire de patrimoine</b>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<div class='premium-card'><b>⚡️ Rapidité</b><br><small>Recettes en moins de 10 min</small></div>", unsafe_allow_html=True)
 with col_b:
-    st.markdown("""
-        <div class='testimonial'>
-            "Outil indispensable pour optimiser ses courses. La précision de l'IA sur les ingrédients de substitution est bluffante."
-            <br><b>— Dr. Claire Lefebvre, Nutritionniste</b>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<div class='premium-card'><b>🌱 Régimes</b><br><small>Végétarien, Keto, Sans Gluten</small></div>", unsafe_allow_html=True)
+with col_c:
+    st.markdown("<div class='premium-card'><b>📉 Budget</b><br><small>Calcul du coût par portion</small></div>", unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+st.button("CRÉER MON PROFIL DE CUISSON")
+st.markdown("</div>", unsafe_allow_html=True)
 
 # --- FOOTER ---
-st.markdown("<p style='text-align: center; color: #94A3B8; font-size: 0.8rem; margin-top: 60px;'>AntiGaspi AI © 2024 - Technologie au service de la durabilité.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #94A3B8; font-size: 0.8rem; margin-top: 80px; padding-bottom: 40px;'>© 2024 AntigaspIA - Excellence & Durabilité.</p>", unsafe_allow_html=True)
