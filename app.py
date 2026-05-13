@@ -1,113 +1,136 @@
 import streamlit as st
 from groq import Groq
-import random
 
 # 1. Configuration de la page
-st.set_page_config(page_title="AntiGaspi AI - Chef Privé", page_icon="🥗", layout="centered")
+st.set_page_config(page_title="AntiGaspi AI | Solutions Alimentaires", page_icon="📈", layout="centered")
 
-# 2. Design CSS Avancé
+# 2. Design "Minimaliste Premium" (Style SaaS 2024)
 st.markdown("""
     <style>
-    .stApp { background: #F8FAFC; }
-    .main-title { color: #1E293B; font-weight: 900; text-align: center; font-size: 2.5rem; margin-bottom: 0; }
-    .sub-title { text-align: center; color: #64748B; margin-bottom: 2rem; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
     
-    /* Stats Bar */
-    .stats-container {
-        display: flex; justify-content: center; gap: 20px; margin-bottom: 2rem;
-    }
-    .stat-card {
-        background: white; padding: 10px 20px; border-radius: 10px; 
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center;
-    }
-    
-    /* Bouton Cuisiner */
-    .stButton>button {
-        width: 100%; border-radius: 12px; height: 3.5rem;
-        background: linear-gradient(90deg, #22C55E 0%, #16A34A 100%);
-        color: white; font-weight: bold; border: none; font-size: 1.1rem;
+    html, body, [class*="css"] {
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* Avis Clients */
-    .review-card {
-        background: #FFFFFF; padding: 15px; border-radius: 12px;
-        margin: 10px 0; border: 1px solid #E2E8F0; font-size: 0.9rem;
+    /* Fond épuré */
+    .stApp { background-color: #FFFFFF; }
+
+    /* Barre de navigation simulée */
+    .nav-bar {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 20px 0; margin-bottom: 40px; border-bottom: 1px solid #F1F5F9;
     }
-    .stars { color: #F59E0B; }
-    
-    /* Affiliation Button */
-    .affilie-btn {
-        display: inline-block; padding: 10px 20px; background: #E11D48;
-        color: white !important; text-decoration: none; border-radius: 8px;
-        font-weight: bold; margin-top: 10px; text-align: center; width: 100%;
+    .login-btn {
+        background: #F8FAFC; padding: 8px 16px; border-radius: 6px;
+        color: #0F172A; font-weight: 600; text-decoration: none; font-size: 0.9rem;
+        border: 1px solid #E2E8F0;
+    }
+
+    /* Section Hero */
+    .hero-title { 
+        color: #0F172A; font-weight: 800; text-align: center; 
+        font-size: 2.8rem; line-height: 1.1; margin-bottom: 15px;
+    }
+    .hero-subtitle { 
+        text-align: center; color: #475569; font-size: 1.2rem;
+        max-width: 600px; margin: 0 auto 40px auto;
+    }
+
+    /* Zone d'action principale */
+    .main-card {
+        background: #FFFFFF; padding: 40px; border-radius: 24px;
+        border: 1px solid #E2E8F0; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
+        margin-bottom: 40px;
+    }
+
+    /* Bouton d'action massif */
+    .stButton>button {
+        width: 100%; border-radius: 12px; height: 3.8rem;
+        background-color: #0F172A; color: white; font-weight: 700;
+        font-size: 1.1rem; border: none; transition: all 0.2s ease;
+        margin-top: 20px;
+    }
+    .stButton>button:hover { background-color: #1E293B; transform: translateY(-1px); }
+
+    /* Témoignages sobres */
+    .testimonial {
+        font-style: italic; color: #475569; border-left: 3px solid #0F172A;
+        padding-left: 20px; margin: 30px 0; font-size: 1rem;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- HEADER & STATS ---
-st.markdown("<h1 class='main-title'>🥗 AntiGaspi AI</h1>", unsafe_allow_html=True)
-st.markdown("<p class='sub-title'>L'IA qui transforme vos restes en or</p>", unsafe_allow_html=True)
+# --- NAVIGATION ---
+st.markdown("""
+    <div class='nav-bar'>
+        <div style='font-weight:800; font-size:1.2rem; color:#0F172A;'>ANTIGASPI.AI</div>
+        <a href='#' class='login-btn'>S'identifier / Créer un compte</a>
+    </div>
+    """, unsafe_allow_html=True)
 
-col_s1, col_s2 = st.columns(2)
-with col_s1:
-    st.markdown(f"<div class='stat-card'><b>{random.randint(12400, 12600)}</b><br><small>Repas sauvés</small></div>", unsafe_allow_html=True)
-with col_s2:
-    st.markdown(f"<div class='stat-card'><b>{random.randint(4800, 5000)}</b><br><small>Utilisateurs actifs</small></div>", unsafe_allow_html=True)
+# --- HERO SECTION ---
+st.markdown("<h1 class='hero-title'>Ne gaspillez plus.<br>Cuisinez intelligemment.</h1>", unsafe_allow_html=True)
+st.markdown("<p class='hero-subtitle'>L'intelligence artificielle au service de votre budget et de l'environnement.</p>", unsafe_allow_html=True)
 
-# --- CONNEXION GROQ ---
-try:
-    client = Groq(api_key=st.secrets["GROQ_API_KEY"])
-except:
-    st.error("Erreur de configuration API.")
-    st.stop()
+# --- ZONE D'ACTION PRINCIPALE ---
+with st.container():
+    st.markdown("<div class='main-card'>", unsafe_allow_html=True)
+    
+    st.markdown("### 🛠 Configurer votre analyse")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        regime = st.selectbox("Préférences", ["Aucune restriction", "Végétarien", "Vegan", "Sans Gluten", "Paléo"])
+    with col2:
+        budget = st.selectbox("Objectif Budget", ["Économique", "Standard", "Gastronomique"])
 
-# --- PERSONNALISATION PROFIL ---
-st.write("### 👤 Personnalisez votre expérience")
-regime = st.multiselect("Votre régime :", ["Classique", "Végétarien", "Sportif (Protéiné)", "Petit Budget", "Sans Gluten"])
-temps = st.select_slider("Temps max de préparation :", options=["10 min", "20 min", "30 min", "Illimité"])
+    # On met l'accent sur l'entrée des ingrédients
+    ingredients = st.text_area("📋 Liste des ingrédients restants :", 
+                               placeholder="Ex: 3 carottes, 1/2 oignon, reste de poulet...",
+                               height=120)
+    
+    submit = st.button("LANCER L'OPTIMISATION CULINAIRE")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-# --- INPUT INGRÉDIENTS ---
-ingredients = st.text_area("🛒 Ingrédients dans votre frigo :", placeholder="Ex: 2 oeufs, jambon, fromage...")
-
-# --- BOUTON PRINCIPAL ---
-if st.button("🍳 GÉNÉRER MA RECETTE SUR-MESURE"):
+# --- LOGIQUE IA ---
+if submit:
     if not ingredients:
-        st.warning("Ajoutez des ingrédients !")
+        st.error("Veuillez saisir au moins un ingrédient pour lancer l'IA.")
     else:
-        # --- POP-UP EMAIL (Simulé) ---
-        st.info("📩 **ASTUCE :** Enregistrez votre email pour recevoir notre guide '10 astuces Anti-Gaspi' gratuitement !")
-        email = st.text_input("Votre email (Optionnel) :")
-        
-        with st.spinner('Le Chef IA prépare votre plan...'):
-            prompt = f"Fais une recette {regime} prête en {temps} avec : {ingredients}. Structure : Titre, Ingrédients, Étapes, Calories."
-            completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model="llama-3.3-70b-versatile")
-            
-            st.success("Voici votre recette !")
-            st.markdown(completion.choices[0].message.content)
-            
-            # --- AFFILIATION ---
-            st.markdown("""
-                <a href='https://www.carrefour.fr/services/drive' class='affilie-btn'>
-                🛒 Manque-t-il un ingrédient ? Commandez au Drive Carrefour
-                </a>
-                """, unsafe_allow_html=True)
-            st.balloons()
+        try:
+            client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+            with st.spinner('Analyse des combinaisons optimales...'):
+                prompt = f"Expert culinaire. Recette {regime} budget {budget} avec : {ingredients}. Structure claire : Titre, Ingrédients, Instructions précises."
+                completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model="llama-3.3-70b-versatile")
+                
+                st.markdown("### 💎 Votre Solution Sur-Mesure")
+                st.success(completion.choices[0].message.content)
+                
+                # Option de sauvegarde (pour inciter à créer un compte)
+                st.info("💡 **Voulez-vous enregistrer cette recette ?** Créez un compte pour retrouver vos préférences et vos historiques d'analyses.")
+        except:
+            st.error("Service momentanément indisponible.")
 
-# --- AVIS CLIENTS (CRÉDIBLES) ---
+# --- PREUVE SOCIALE SOBRE ---
 st.write("---")
-st.write("### 💬 Ce que disent nos utilisateurs")
-avis = [
-    {"nom": "Sarah D.", "texte": "Incroyable ! J'ai sauvé mes légumes oubliés, mon fils a adoré.", "note": "⭐⭐⭐⭐⭐"},
-    {"nom": "Marc L.", "texte": "Pratique pour les fins de mois difficiles. Je recommande à 100%.", "note": "⭐⭐⭐⭐⭐"},
-    {"nom": "Julie R.", "texte": "Les idées de recettes sont vraiment originales, ça change du quotidien.", "note": "⭐⭐⭐⭐"}
-]
+st.markdown("#### Retours sur l'efficacité de la solution")
 
-for a in avis:
-    st.markdown(f"""
-        <div class='review-card'>
-            <span class='stars'>{a['note']}</span><br>
-            <b>{a['nom']}</b> : "{a['texte']}"
+col_a, col_b = st.columns(2)
+with col_a:
+    st.markdown("""
+        <div class='testimonial'>
+            "Une approche pragmatique du gaspillage. Les recettes sont techniquement justes et adaptées au budget familial."
+            <br><b>— Antoine M., Gestionnaire de patrimoine</b>
+        </div>
+    """, unsafe_allow_html=True)
+with col_b:
+    st.markdown("""
+        <div class='testimonial'>
+            "Outil indispensable pour optimiser ses courses. La précision de l'IA sur les ingrédients de substitution est bluffante."
+            <br><b>— Dr. Claire Lefebvre, Nutritionniste</b>
         </div>
     """, unsafe_allow_html=True)
 
-st.markdown("<p style='text-align: center; font-size: 0.7rem; color: gray;'><br>Copyright 2024 - AntiGaspi AI Business</p>", unsafe_allow_html=True)
+# --- FOOTER ---
+st.markdown("<p style='text-align: center; color: #94A3B8; font-size: 0.8rem; margin-top: 60px;'>AntiGaspi AI © 2024 - Technologie au service de la durabilité.</p>", unsafe_allow_html=True)
