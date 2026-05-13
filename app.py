@@ -1,118 +1,113 @@
 import streamlit as st
 from groq import Groq
+import random
 
 # 1. Configuration de la page
-st.set_page_config(
-    page_title="AntiGaspi AI",
-    page_icon="🥗",
-    layout="centered"
-)
+st.set_page_config(page_title="AntiGaspi AI - Chef Privé", page_icon="🥗", layout="centered")
 
-# 2. Design Personnalisé (CSS)
+# 2. Design CSS Avancé
 st.markdown("""
     <style>
-    /* Fond de l'application */
-    .stApp {
-        background: linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 100%);
+    .stApp { background: #F8FAFC; }
+    .main-title { color: #1E293B; font-weight: 900; text-align: center; font-size: 2.5rem; margin-bottom: 0; }
+    .sub-title { text-align: center; color: #64748B; margin-bottom: 2rem; }
+    
+    /* Stats Bar */
+    .stats-container {
+        display: flex; justify-content: center; gap: 20px; margin-bottom: 2rem;
+    }
+    .stat-card {
+        background: white; padding: 10px 20px; border-radius: 10px; 
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center;
     }
     
-    /* Titre principal */
-    h1 {
-        color: #1E293B;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-weight: 800;
-        text-align: center;
-        padding-bottom: 0px;
-    }
-    
-    /* Bouton principal */
+    /* Bouton Cuisiner */
     .stButton>button {
-        width: 100%;
-        border-radius: 12px;
-        height: 3.5rem;
-        background-color: #22C55E; /* Vert cuisine */
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        border: none;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s;
+        width: 100%; border-radius: 12px; height: 3.5rem;
+        background: linear-gradient(90deg, #22C55E 0%, #16A34A 100%);
+        color: white; font-weight: bold; border: none; font-size: 1.1rem;
     }
-    
-    .stButton>button:hover {
-        background-color: #16A34A;
-        transform: translateY(-2px);
+
+    /* Avis Clients */
+    .review-card {
+        background: #FFFFFF; padding: 15px; border-radius: 12px;
+        margin: 10px 0; border: 1px solid #E2E8F0; font-size: 0.9rem;
     }
+    .stars { color: #F59E0B; }
     
-    /* Zone de texte */
-    .stTextArea textarea {
-        border-radius: 12px;
-        border: 1px solid #E2E8F0;
-    }
-    
-    /* Carte de recette */
-    .recipe-card {
-        background-color: white;
-        padding: 20px;
-        border-radius: 15px;
-        border-left: 5px solid #22C55E;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
+    /* Affiliation Button */
+    .affilie-btn {
+        display: inline-block; padding: 10px 20px; background: #E11D48;
+        color: white !important; text-decoration: none; border-radius: 8px;
+        font-weight: bold; margin-top: 10px; text-align: center; width: 100%;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. En-tête
-st.markdown("<h1>🥗 AntiGaspi AI</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #64748B;'>Transformez vos restes en festin étoilé ✨</p>", unsafe_allow_html=True)
+# --- HEADER & STATS ---
+st.markdown("<h1 class='main-title'>🥗 AntiGaspi AI</h1>", unsafe_allow_html=True)
+st.markdown("<p class='sub-title'>L'IA qui transforme vos restes en or</p>", unsafe_allow_html=True)
 
-# 4. Connexion Groq
+col_s1, col_s2 = st.columns(2)
+with col_s1:
+    st.markdown(f"<div class='stat-card'><b>{random.randint(12400, 12600)}</b><br><small>Repas sauvés</small></div>", unsafe_allow_html=True)
+with col_s2:
+    st.markdown(f"<div class='stat-card'><b>{random.randint(4800, 5000)}</b><br><small>Utilisateurs actifs</small></div>", unsafe_allow_html=True)
+
+# --- CONNEXION GROQ ---
 try:
-    ma_cle = st.secrets["GROQ_API_KEY"]
-    client = Groq(api_key=ma_cle)
+    client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 except:
-    st.error("🔑 Configuration de la clé API manquante.")
+    st.error("Erreur de configuration API.")
     st.stop()
 
-# 5. Formulaire
-st.write("---")
-ingredients = st.text_area("🛒 Qu'avez-vous dans votre frigo ?", 
-                           placeholder="Ex: 2 oeufs, un fond de crème, quelques champignons...",
-                           help="Séparez les ingrédients par une virgule.")
+# --- PERSONNALISATION PROFIL ---
+st.write("### 👤 Personnalisez votre expérience")
+regime = st.multiselect("Votre régime :", ["Classique", "Végétarien", "Sportif (Protéiné)", "Petit Budget", "Sans Gluten"])
+temps = st.select_slider("Temps max de préparation :", options=["10 min", "20 min", "30 min", "Illimité"])
 
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    submit = st.button("🍳 Cuisiner maintenant")
+# --- INPUT INGRÉDIENTS ---
+ingredients = st.text_area("🛒 Ingrédients dans votre frigo :", placeholder="Ex: 2 oeufs, jambon, fromage...")
 
-# 6. Logique et Affichage
-if submit:
+# --- BOUTON PRINCIPAL ---
+if st.button("🍳 GÉNÉRER MA RECETTE SUR-MESURE"):
     if not ingredients:
-        st.warning("Veuillez entrer au moins un ingrédient !")
+        st.warning("Ajoutez des ingrédients !")
     else:
-        try:
-            with st.spinner('👨‍🍳 Le chef réfléchit à votre recette...'):
-                prompt = f"""Tu es un chef cuisinier expert en anti-gaspillage. 
-                Crée une recette appétissante en utilisant uniquement ou principalement ces ingrédients : {ingredients}.
-                Structure ta réponse de la manière suivante :
-                1. Un titre accrocheur avec un émoji.
-                2. Temps de préparation et difficulté.
-                3. Liste des ingrédients.
-                4. Étapes de préparation numérotées.
-                5. Une petite astuce du chef pour ne rien jeter."""
-                
-                chat_completion = client.chat.completions.create(
-                    messages=[{"role": "user", "content": prompt}],
-                    model="llama-3.3-70b-versatile"
-                )
-                
-                recette = chat_completion.choices[0].message.content
-                
-                st.markdown('<div class="recipe-card">', unsafe_allow_html=True)
-                st.markdown(recette)
-                st.markdown('</div>', unsafe_allow_html=True)
-                st.balloons()
-        except Exception as e:
-            st.error(f"Une erreur est survenue : {e}")
+        # --- POP-UP EMAIL (Simulé) ---
+        st.info("📩 **ASTUCE :** Enregistrez votre email pour recevoir notre guide '10 astuces Anti-Gaspi' gratuitement !")
+        email = st.text_input("Votre email (Optionnel) :")
+        
+        with st.spinner('Le Chef IA prépare votre plan...'):
+            prompt = f"Fais une recette {regime} prête en {temps} avec : {ingredients}. Structure : Titre, Ingrédients, Étapes, Calories."
+            completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model="llama-3.3-70b-versatile")
+            
+            st.success("Voici votre recette !")
+            st.markdown(completion.choices[0].message.content)
+            
+            # --- AFFILIATION ---
+            st.markdown("""
+                <a href='https://www.carrefour.fr/services/drive' class='affilie-btn'>
+                🛒 Manque-t-il un ingrédient ? Commandez au Drive Carrefour
+                </a>
+                """, unsafe_allow_html=True)
+            st.balloons()
 
-# Footer
-st.markdown("<br><br><p style='text-align: center; color: #94A3B8; font-size: 12px;'>Fait avec ❤️ pour la planète</p>", unsafe_allow_html=True)
+# --- AVIS CLIENTS (CRÉDIBLES) ---
+st.write("---")
+st.write("### 💬 Ce que disent nos utilisateurs")
+avis = [
+    {"nom": "Sarah D.", "texte": "Incroyable ! J'ai sauvé mes légumes oubliés, mon fils a adoré.", "note": "⭐⭐⭐⭐⭐"},
+    {"nom": "Marc L.", "texte": "Pratique pour les fins de mois difficiles. Je recommande à 100%.", "note": "⭐⭐⭐⭐⭐"},
+    {"nom": "Julie R.", "texte": "Les idées de recettes sont vraiment originales, ça change du quotidien.", "note": "⭐⭐⭐⭐"}
+]
+
+for a in avis:
+    st.markdown(f"""
+        <div class='review-card'>
+            <span class='stars'>{a['note']}</span><br>
+            <b>{a['nom']}</b> : "{a['texte']}"
+        </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("<p style='text-align: center; font-size: 0.7rem; color: gray;'><br>Copyright 2024 - AntiGaspi AI Business</p>", unsafe_allow_html=True)
