@@ -1,131 +1,190 @@
-import streamlit as st
-from groq import Groq
-
-# 1. Configuration Pro
-st.set_page_config(page_title="AntigaspIA | Haute Cuisine", page_icon="🍽️", layout="wide")
-
-# 2. Design "Square & Premium" (Style SaaS Moderne)
-st.markdown("""
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Art de Bien Manger | Anti-Gaspi & Plaisir</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Playfair+Display:wght@700&display=swap');
-    
-    .stApp { background-color: #F8FAFC; font-family: 'Inter', sans-serif; }
+        /* Variables de couleurs */
+        :root {
+            --primary: #2d5a27; /* Vert forêt */
+            --accent: #e67e22; /* Orange doux */
+            --text: #2c3e50;
+            --light: #f9f7f2;
+        }
 
-    /* Header Compact et Carré */
-    .hero-banner {
-        background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=2000');
-        background-size: cover;
-        background-position: center;
-        padding: 60px 20px;
-        color: white;
-        text-align: center;
-        border-bottom: 4px solid #0F172A;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .brand-name { font-family: 'Playfair Display', serif; font-size: 3.5rem; letter-spacing: -1px; margin: 0; }
-    .hero-tagline { font-size: 1rem; font-weight: 300; opacity: 0.8; text-transform: uppercase; letter-spacing: 2px; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            overflow-x: hidden;
+        }
 
-    /* Conteneur principal "Carré" */
-    .main-workspace {
-        max-width: 1100px;
-        margin: -40px auto 40px auto;
-        display: grid;
-        grid-template-columns: 1fr 350px;
-        gap: 20px;
-        position: relative;
-        z-index: 100;
-    }
+        /* Hero Section avec image floutée */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
 
-    /* Bloc de Saisie */
-    .input-card {
-        background: white;
-        padding: 30px;
-        border: 2px solid #0F172A;
-        box-shadow: 10px 10px 0px #0F172A; /* Effet carré pro */
-    }
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Image de nourriture réelle en haute qualité */
+            background: url('https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+            filter: blur(4px) brightness(0.6); /* Flou + assombrissement */
+            z-index: -1;
+        }
 
-    /* Bloc Latéral (Options) */
-    .side-card {
-        background: #0F172A;
-        padding: 30px;
-        color: white;
-        border: 2px solid #0F172A;
-        box-shadow: 10px 10px 0px #CBD5E1;
-    }
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
 
-    /* Bouton Noir Massif */
-    .stButton>button {
-        background-color: #0F172A;
-        color: white;
-        border-radius: 0px; /* Carré */
-        height: 60px;
-        font-weight: 800;
-        text-transform: uppercase;
-        border: none;
-        width: 100%;
-        transition: 0.2s;
-    }
-    .stButton>button:hover { background-color: #334155; transform: translate(-2px, -2px); box-shadow: 4px 4px 0px #94A3B8; }
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-weight: 300;
+        }
 
-    /* Custom Text Area */
-    .stTextArea textarea { border-radius: 0px; border: 2px solid #E2E8F0; padding: 15px; }
-    
-    h3 { font-family: 'Playfair Display', serif; margin-bottom: 20px; }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Section Manifeste */
+        .manifesto {
+            padding: 100px 10% ;
+            background: var(--light);
+            text-align: center;
+        }
+
+        .manifesto h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: var(--primary);
+        }
+
+        .manifesto-text {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* Cards Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 80px 10%;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-bottom: 5px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-bottom: 5px solid var(--primary);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px;
+            text-align: center;
+            background: #222;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .manifesto { padding: 60px 5%; }
+            .features { padding: 40px 5%; }
+        }
     </style>
-    """, unsafe_allow_html=True)
+</head>
+<body>
 
-# --- HEADER ---
-st.markdown("""
-    <div class="hero-banner">
-        <p class="hero-tagline">Intelligence Artificielle Culinaire</p>
-        <h1 class="brand-name">AntigaspIA</h1>
-    </div>
-    """, unsafe_allow_html=True)
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>Cuisiner, c'est s'aimer.</h1>
+            <p>Redécouvrez le plaisir des produits simples, apprenez à ne plus rien jeter et transformez votre quotidien en festin.</p>
+            <a href="#propos" class="btn">Découvrir l'aventure</a>
+        </div>
+    </section>
 
-# --- WORKSPACE ---
-st.markdown("<div class='main-workspace'>", unsafe_allow_html=True)
+    <section class="manifesto" id="propos">
+        <h2>Pourquoi ce projet ?</h2>
+        <div class="manifesto-text">
+            <p>Tout a commencé par un constat simple : nos poubelles débordent de produits oubliés, tandis que nos corps s'habituent au "vite-fait". On a voulu lancer ça pour prouver que <strong>bien manger</strong> n'est pas un luxe réservé aux chefs étoilés.</p>
+            <br>
+            <p>C'est une invitation à ralentir, à toucher les produits, à oser les associations et surtout, à respecter ce que la nature nous offre. Ici, on ne jette rien, on réinvente tout.</p>
+        </div>
+    </section>
 
-# Colonne Gauche : L'ACTION
-with st.container():
-    st.markdown("<div class='input-card'>", unsafe_allow_html=True)
-    st.markdown("<h3>Optimisation instantanée</h3>", unsafe_allow_html=True)
-    
-    ingredients = st.text_area("Inventaire de vos restes :", 
-                               placeholder="Ex: 2 filets de bar, citron vert, reste de quinoa...", 
-                               height=180, label_visibility="collapsed")
-    
-    if st.button("Lancer l'analyse culinaire"):
-        if not ingredients:
-            st.error("Veuillez renseigner votre inventaire.")
-        else:
-            try:
-                client = Groq(api_key=st.secrets["GROQ_API_KEY"])
-                with st.spinner('Analyse en cours...'):
-                    prompt = f"Expert culinaire. Recette pro avec : {ingredients}. Style : Fiche technique, précis."
-                    completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model="llama-3.3-70b-versatile")
-                    st.markdown("---")
-                    st.markdown("### 📋 Fiche Recette AntigaspIA")
-                    st.info(completion.choices[0].message.content)
-            except:
-                st.error("Erreur serveur.")
-    st.markdown("</div>", unsafe_allow_html=True)
+    <section class="features">
+        <div class="card">
+            <h3>🥑 Pour vous</h3>
+            <p>Reprenez le contrôle sur votre santé. Cuisiner soi-même, c'est savoir exactement ce qui compose votre énergie de demain.</p>
+        </div>
+        <div class="card">
+            <h3>🌍 Anti-Gaspi</h3>
+            <p>Apprenez à sublimer les restes et à cuisiner les parties oubliées des aliments. Moins de déchets, plus de goût.</p>
+        </div>
+        <div class="card">
+            <h3>✨ Simplicité</h3>
+            <p>Pas besoin de techniques compliquées. On prône le retour à l'essentiel : du bon, du frais, du vrai.</p>
+        </div>
+    </section>
 
-# Colonne Droite : OPTIONS & COMPTE (Plus pro)
-with st.container():
-    st.markdown("<div class='side-card'>", unsafe_allow_html=True)
-    st.markdown("<h4 style='color:white; margin-bottom:20px;'>CONFIGURATION</h4>", unsafe_allow_html=True)
-    
-    st.selectbox("Régime", ["Standard", "Végétarien", "Sportif"], index=0)
-    st.selectbox("Niveau", ["Amateur", "Chef"], index=1)
-    
-    st.markdown("<br><hr style='border-color:#334155'><br>", unsafe_allow_html=True)
-    
-    st.markdown("##### ESPACE MEMBRE")
-    st.write("Sauvegardez vos fiches et préférences.")
-    st.button("CRÉER UN COMPTE")
-    st.markdown("</div>", unsafe_allow_html=True)
+    <footer>
+        <p>&copy; 2026 - Créé avec passion pour les amoureux de la bonne bouffe.</p>
+    </footer>
 
-st.markdown("</div>", unsafe_allow_html=True)
-
-# --- FOOTER ---
-st.markdown("<p style='text-align: center; color: #94A3B8; font-size: 0.8rem; margin-top: 100px;'>© 2024 AntigaspIA - Excellence, Précision, Durabilité.</p>", unsafe_allow_html=True)
+</body>
+</html>
