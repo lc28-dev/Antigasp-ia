@@ -1,5 +1,6 @@
 import streamlit as st
 from groq import Groq
+import streamlit.components.v1 as components
 
 # 1. FIXATION STRICTE DE L'ÉCRAN IPAD (Mode centré sans dérapage latéral)
 st.set_page_config(
@@ -9,7 +10,18 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. CSS DE FORCE SÉCURITÉ - TEXTE BLANC INTENSE & ZÉRO GLISSEMENT HORIZONTAL
+# 2. SÉCURITÉ ADSENSE : RECONNAISSANCE ET VALIDATION DU SITE PAR GOOGLE
+# Ce bloc injecte le code exact visible sur ton écran pour valider ton site AntigaspIA auprès de Google AdSense.
+components.html(
+    """
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1756718492717210"
+     crossorigin="anonymous"></script>
+    """,
+    height=0,
+    width=0
+)
+
+# 3. CSS DE FORCE SÉCURITÉ - TEXTE BLANC INTENSE & ZÉRO GLISSEMENT HORIZONTAL
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
@@ -74,13 +86,13 @@ st.markdown("""
         box-sizing: border-box;
     }
 
-    /* Forçage de la visibilité des options de préférence (Multi-select / Pills) */
+    /* Forçage de la visibilité des options de préférence (Multi-select) */
     div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
         border-radius: 10px !important;
     }
     div[data-baseweb="select"] * {
-        color: #0F172A !important; /* Écrit en noir dans la boîte de choix pour voir ce qu'on tape */
+        color: #0F172A !important;
     }
 
     /* Textarea des ingrédients */
@@ -115,7 +127,7 @@ st.markdown("""
         margin-bottom: 25px;
     }
 
-    /* 🚨 TUNNEL DE SÉCURITÉ : BLANC DE BLANC ABSOLU ET INDÉTRONISABLE POUR L'IA 🚨 */
+    /* TUNNEL DE SÉCURITÉ : BLANC DE BLANC ABSOLU POUR L'IA */
     .recipe-pure-white-box {
         color: #FFFFFF !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
@@ -189,7 +201,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 3. INITIALISATION DES SESSIONS ---
+# --- 4. INITIALISATION DES SESSIONS ---
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 if "user_mail" not in st.session_state:
@@ -201,7 +213,7 @@ except:
     st.error("Clé d'API Groq introuvable.")
     st.stop()
 
-# --- 4. BARRE DE CONNEXION POP-OVER HAUT DROITE ---
+# --- 5. BARRE DE CONNEXION POP-OVER HAUT DROITE ---
 st.markdown("<div class='discreet-login-container'>", unsafe_allow_html=True)
 if not st.session_state.authenticated:
     with st.popover("🔑 Connexion / Inscription pour enregistrer vos régimes !"):
@@ -220,7 +232,7 @@ else:
         st.rerun()
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- 5. TITRE & MANIFESTE SÉCURISÉ ---
+# --- 6. TITRE & MANIFESTE SÉCURISÉ ---
 st.markdown("<h1 class='main-title'>AntigaspIA</h1>", unsafe_allow_html=True)
 st.markdown("""
     <div class='pro-manifesto'>
@@ -232,7 +244,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# --- 6. BLOC PRINCIPAL DE CONFIGURATION ---
+# --- 7. BLOC PRINCIPAL DE CONFIGURATION ---
 st.markdown("<div class='generator-panel'>", unsafe_allow_html=True)
 st.markdown("<h3 style='margin-top:0; font-family:Playfair Display, serif; font-size:1.6rem; text-align:center; font-weight:700; color:#FFF;'>🍳 Que cache votre réfrigérateur aujourd'hui ?</h3>", unsafe_allow_html=True)
 
@@ -245,7 +257,7 @@ liste_ingredients = st.text_area(
     key="frigo_input_ipad"
 )
 
-# NOUVEAU MODULE : SÉLECTION DES PRÉFÉRENCES ET RÉGIMES ALIMENTAIRES
+# SELECTION DES PRÉFÉRENCES ET RÉGIMES ALIMENTAIRES
 st.markdown("<p style='margin-top:15px; font-weight:700; font-size:1.05rem; color:#FFFFFF;'>🥗 Adapter la recette à vos objectifs & régimes :</p>", unsafe_allow_html=True)
 options_regimes = st.multiselect(
     "Options de préférences",
@@ -261,17 +273,15 @@ options_regimes = st.multiselect(
 st.markdown("<div style='margin-top:15px;'></div>", unsafe_allow_html=True)
 bouton_generer = st.button("Transformer mes restes en un festin de chef", key="btn_execute_recipe")
 
-# --- 7. APEL API ET SÉCURISATION HTML CONTRE SAFARI IPAD ---
+# --- 8. APEL API ET AFFICHAGE RECETTE ---
 if bouton_generer:
     if not liste_ingredients:
         st.warning("Veuillez renseigner au moins un ingrédient.")
     else:
         with st.spinner('Création de votre fiche culinaire sur-mesure...'):
             
-            # Construction du filtre texte basé sur les puces sélectionnées
             filtre_texte = ", ".join(options_regimes)
             
-            # Directive ultra-stricte : pas de markdown, uniquement des balises HTML standards
             prompt_systeme = (
                 f"Tu es AntigaspIA, un chef d'excellence. Rédige une recette gastronomique avec ces ingrédients : {liste_ingredients}. "
                 f"Contrainte majeure : Tu dois impérativement respecter les régimes et préférences suivants : {filtre_texte}. "
@@ -285,14 +295,12 @@ if bouton_generer:
                 model="llama-3.3-70b-versatile"
             )
             
-            # Affichage du bandeau vert uniquement
             st.markdown("""
                 <div class='scroll-indicator'>
                     ⬇️ VOTRE RECETTE UNIQUE EST PRÊTE ! DÉCOUVREZ-LA DIRECTEMENT CI-DESSOUS ⬇️
                 </div>
             """, unsafe_allow_html=True)
             
-            # Injection de la structure HTML directement sur le fond d'écran dans le tunnel blanc
             contenu_recette = reponse_api.choices[0].message.content
             st.markdown(f"""
                 <div class='recipe-pure-white-box'>
@@ -304,5 +312,5 @@ if bouton_generer:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- 8. PIED DE PAGE ---
+# --- 9. PIED DE PAGE ---
 st.markdown("<p style='text-align:center; font-weight:700; margin-top:40px; font-size:1rem; color:#FFFFFF;'>Économiser intelligemment. Consommer durablement. Cuisiner élégamment.</p>", unsafe_allow_html=True)
