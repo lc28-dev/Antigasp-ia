@@ -16,20 +16,16 @@ st.set_page_config(
 # ==============================================================================
 # 🧲 INJECTION DE SÉCURITÉ ADSENSE DIRECTE (HORS IFRAME)
 # ==============================================================================
-# Cette commande force Streamlit à poser le script de validation directement 
-# là où le robot d'exploration Google Adsense l'attend.
 st.html("""
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1756718492717210" crossorigin="anonymous"></script>
 """)
 
 # ==============================================================================
-# 🎨 ARCHITECTURE STYLING CSS AVANCÉE (ANTI-BRIDAGE IPAD SAFARI)
+# 🎨 ARCHITECTURE STYLING CSS AVANCÉE (OPTIMISÉE BLANC PUR POUR IPAD)
 # ==============================================================================
-# Ce bloc CSS réécrit entièrement l'interface utilisateur native de Streamlit 
-# pour lui donner un look premium, sombre, haut de gamme et ultra-lisible.
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Playfair+Display:wght=600;700;800;900&display=swap');
     
     /* Neutralisation absolue des glissements latéraux indésirables sur tablettes Apple */
     html, body, .stApp, .block-container {
@@ -60,7 +56,7 @@ st.markdown("""
         box-shadow: none !important;
     }
 
-    /* Alignement chirurgical du module popover utilisateur à droite */
+    /* Alignement du module popover utilisateur à droite */
     .discreet-login-container {
         text-align: right;
         margin-bottom: 30px;
@@ -77,11 +73,6 @@ st.markdown("""
         padding: 10px 20px !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
-        transition: all 0.3s ease;
-    }
-    div[data-testid="stPopover"] > button:hover {
-        border-color: #F59E0B !important;
-        box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
     }
 
     /* Titrage Principal Typographie Luxe */
@@ -97,7 +88,7 @@ st.markdown("""
         letter-spacing: -1px;
     }
     
-    /* Grand Texte Manifeste d'Origine Restructuré */
+    /* Grand Texte Manifeste */
     .pro-manifesto {
         font-size: 1.2rem;
         line-height: 1.7;
@@ -136,11 +127,18 @@ st.markdown("""
         color: #0F172A !important;
         font-weight: 600 !important;
     }
-    div[data-testid="stWidgetLabel"] p {
-        color: #E2E8F0 !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
+    
+    /* 🌟 FIX RETINA IPAD : FORCE LE TEXTE DES TITRES DE SÉLECTEURS EN BLANC PUR 🌟 */
+    div[data-testid="stWidgetLabel"] p, 
+    label[data-testid="stWidgetLabel"] p,
+    .st-emotion-cache-10trblm p,
+    .st-emotion-cache-1p7n9v0 p {
+        color: #FFFFFF !important;
+        color: rgb(255, 255, 255) !important;
+        font-weight: 700 !important;
+        font-size: 1.05rem !important;
         margin-bottom: 8px !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
     }
 
     /* Zone de saisie TextArea des ingrédients */
@@ -152,9 +150,6 @@ st.markdown("""
         padding: 18px !important;
         border: 2px solid transparent !important;
         font-weight: 500 !important;
-    }
-    .stTextArea textarea:focus {
-        border-color: #F59E0B !important;
     }
 
     /* Grand bouton d'exécution Or Ambré Cuit */
@@ -170,11 +165,6 @@ st.markdown("""
         letter-spacing: 0.5px;
         border: none !important;
         box-shadow: 0 10px 25px rgba(217, 119, 6, 0.35) !important;
-        transition: all 0.25s ease !important;
-    }
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 14px 30px rgba(217, 119, 6, 0.45) !important;
     }
 
     /* Indicateur de chargement / succès vert émeraude */
@@ -187,13 +177,11 @@ st.markdown("""
         font-weight: 800;
         margin-top: 30px;
         margin-bottom: 30px;
-        letter-spacing: 0.5px;
         font-size: 1.05rem;
         box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
     }
 
-    /* 🛡️ BLOC DE CONFINEMENT DU RENDU CULINAIRE (FORCE BLANCHE TOTALE) 🛡️ */
-    /* Empêche définitivement Safari d'appliquer ses règles de thèmes grisâtres */
+    /* BLOC DE CONFINEMENT DU RENDU CULINAIRE */
     .recipe-display-container {
         background: rgba(15, 23, 42, 0.92) !important;
         border: 2px solid rgba(255, 255, 255, 0.2);
@@ -218,7 +206,6 @@ st.markdown("""
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* Titrage interne des fiches recettes générées */
     .recipe-display-container h2, .recipe-display-container h3 {
         font-family: 'Playfair Display', serif !important;
         font-size: 2.2rem !important;
@@ -247,7 +234,6 @@ st.markdown("""
         list-style-position: outside !important;
     }
 
-    /* Formulaire popover de sécurité interne */
     .inner-auth-form {
         background-color: #0F172A !important;
         padding: 20px;
@@ -260,14 +246,12 @@ st.markdown("""
         border-radius: 10px !important;
     }
     
-    /* Pied de page */
     .footer-text {
         text-align: center;
         font-weight: 600;
         margin-top: 50px;
         font-size: 1rem;
         color: #64748B !important;
-        letter-spacing: 0.5px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -283,11 +267,11 @@ if "user_mail" not in st.session_state:
 try:
     client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 except Exception as e:
-    st.error("Erreur d'accès : Clé d'API Groq manquante dans les Secrets d'environnement.")
+    st.error("Erreur d'accès : Clé d'API Groq manquante dans les Secrets.")
     st.stop()
 
 # ==============================================================================
-# 🔑 POP-OVER RETINA DE CONNEXION COMPTE
+# 🔑 POP-OVER DE CONNEXION COMPTE
 # ==============================================================================
 st.markdown("<div class='discreet-login-container'>", unsafe_allow_html=True)
 if not st.session_state.authenticated:
@@ -321,11 +305,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 🛠️ BLOC FORMULAIRE DE TRI ET PRÉFÉRENCES (RETOUR DU MODULE COMPLET)
+# 🛠️ BLOC FORMULAIRE DE TRI ET PRÉFÉRENCES
 # ==============================================================================
 st.markdown("<div class='generator-panel'>", unsafe_allow_html=True)
 
-# Ligne des trois sélecteurs de critères d'origine
 col1, col2, col3 = st.columns(3)
 with col1:
     temps_preparation = st.selectbox("⏳ Temps disponible", ["Rapide (-20 min)", "Moyen (20-40 min)", "Prendre son temps (40+ min)"])
@@ -336,8 +319,7 @@ with col3:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Zone de saisie principale des restes
-st.markdown("<p style='color:#E2E8F0; font-weight:600; font-size:1rem; margin-bottom:8px;'>🍳 Quels ingrédients reste-t-il dans votre frigo ?</p>", unsafe_allow_html=True)
+st.markdown("<p style='color:#FFFFFF; font-weight:700; font-size:1.05rem; margin-bottom:8px;'>🍳 Quels ingrédients reste-t-il dans votre frigo ?</p>", unsafe_allow_html=True)
 liste_ingredients = st.text_area(
     "Label invisible",
     placeholder="Exemple : 2 tomates fatiguées, un demi-oignon, un reste de dinde, crème fraîche...", 
@@ -358,7 +340,6 @@ if bouton_generer:
     else:
         with st.spinner('Analyse des restes et composition de votre fiche culinaire...'):
             
-            # Assemblage d'un prompt d'ingénierie ultra-précis pour un rendu parfait
             prompt_systeme = (
                 f"Tu es AntigaspIA, un grand chef cuisinier étoilé et expert en optimisation anti-gaspillage. "
                 f"Crée une recette magistrale de niveau '{niveau_difficulte}' pour un '{type_plat}' réalisable en '{temps_preparation}'. "
@@ -381,7 +362,6 @@ if bouton_generer:
                 </div>
             """, unsafe_allow_html=True)
             
-            # Injection sécurisée dans la boîte opale anti-texte gris
             contenu_recette = reponse_api.choices[0].message.content
             st.markdown(f"""
                 <div class='recipe-display-container'>
